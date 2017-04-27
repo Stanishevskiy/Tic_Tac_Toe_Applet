@@ -15,7 +15,7 @@ public class TicTacToe extends Applet {
     private Panel pnlGenMenu = new Panel();
     private Panel pnlSetMenu = new Panel();
     private GridBagConstraints gbc = new GridBagConstraints();
-    private drawGameField gameField;
+    private DrawGameField gameField;
 
     // Переменные содержащат игровые параметры
     private int fieldWidth = 500;
@@ -25,6 +25,7 @@ public class TicTacToe extends Applet {
     private Choice chsCombToWin = new Choice();
 //    private int comboToWin = Integer.parseInt(chsComboToWin.getSelectedItem());
 
+//----------------------------------------------------------------------
 
     @Override
     public void init() {
@@ -36,7 +37,7 @@ public class TicTacToe extends Applet {
         pnlSetMenu();
         gameFieldSet();
 
-        gameField = new drawGameField(fieldWidth, fieldHeight, cellsCount);
+        gameField = new DrawGameField(fieldWidth, fieldHeight, cellsCount);
         pnlApp.add(gameField, "Game Field");
 
         add(pnlApp, BorderLayout.CENTER);
@@ -46,6 +47,7 @@ public class TicTacToe extends Applet {
 //        System.out.println(fieldHeight);
     }
 
+//----------------------------------------------------------------------
 
     // Метод отвечает за работу главного меню
     private void pnlGenMenu() {
@@ -122,9 +124,9 @@ public class TicTacToe extends Applet {
         });
     }
 
+//----------------------------------------------------------------------
 
-
-    // Создадим метод отвечающий за создание игрового поля
+    // Метод отвечающий за создание игрового поля
     private void gameFieldSet() {
         fieldWidth = this.getWidth();
         fieldHeight = this.getHeight();
@@ -132,12 +134,12 @@ public class TicTacToe extends Applet {
 
         if( cellsCount != Integer.parseInt(chsCellsCount.getSelectedItem()) ) {
             cellsCount = Integer.parseInt(chsCellsCount.getSelectedItem());
-            gameField = new drawGameField(fieldWidth, fieldHeight, cellsCount);
+            gameField = new DrawGameField(fieldWidth, fieldHeight, cellsCount);
             pnlApp.add(gameField, "Game Field");
         }
     }
 
-
+//----------------------------------------------------------------------
 
     // Метод отвечает за работу меню настроек
     private void pnlSetMenu() {
@@ -361,6 +363,7 @@ public class TicTacToe extends Applet {
         btnToGenMenu.setFont(fntSetElements);
         pnlSetMenu.add(btnToGenMenu, gbc);
 
+//----------------------------------------------------------------------
 
         // Обработка событий
         // Обработка клавиш меню настроек
@@ -370,7 +373,5 @@ public class TicTacToe extends Applet {
                 cardLayout.show(pnlApp, "General Menu");
             }
         });
-
-        
     }
 }
