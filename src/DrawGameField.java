@@ -17,10 +17,9 @@ class DrawGameField extends Panel{
     private int cellSize = fieldWidth/cellsCount;
     private int mouseX = 0;
     private int mouseY = 0;
-    private int[][] usedCells = new int[cellsCount][cellsCount];
+    private int[][] mapCells = new int[cellsCount][cellsCount];
     private Random rndTurn = new Random();
     private String gameOver = "Nothing";
-
 
 //----------------------------------------------------------------------
 
@@ -34,7 +33,7 @@ class DrawGameField extends Panel{
         this.cellsCount = cellsCount;
         this.combToWin = combToWin;
         this.cellSize = fieldWidth/cellsCount;
-        this.usedCells = new int[cellsCount][cellsCount];
+        this.mapCells = new int[cellsCount][cellsCount];
 
         setBackground(Color.PINK);
 
@@ -75,7 +74,7 @@ class DrawGameField extends Panel{
         g2.setStroke(new BasicStroke(5));
         for(int i = 0; i < cellsCount; i++) {
             for(int j = 0; j < cellsCount; j++) {
-                if(usedCells[i][j] == 1) {     // Если клетка первого игрока
+                if(mapCells[i][j] == 1) {     // Если клетка первого игрока
                     switch(figPlr1) {
                         case "Cross":
                             g2.setColor(Color.BLACK);
@@ -111,7 +110,7 @@ class DrawGameField extends Panel{
                             break;
                     }
                 }
-                if(usedCells[i][j] == 2) {     // Если клетка второго игрока
+                if(mapCells[i][j] == 2) {     // Если клетка второго игрока
                     switch(figPlr2) {
                         case "Cross":
                             g2.setColor(Color.BLACK);
@@ -181,14 +180,14 @@ class DrawGameField extends Panel{
     private void humanTurn() {
         int cellX = mouseX/cellSize;
         int cellY = mouseY/cellSize;
-        if(usedCells[cellX][cellY] == 0) {
+        if(mapCells[cellX][cellY] == 0) {
             if(currentPlr == 1) {
-                usedCells[cellX][cellY] = 1;
+                mapCells[cellX][cellY] = 1;
                 this.repaint();
                 currentPlr = 2;
                 oppositePlr = 1;
             } else {
-                usedCells[cellX][cellY] = 2;
+                mapCells[cellX][cellY] = 2;
                 this.repaint();
                 currentPlr = 1;
                 oppositePlr = 2;
@@ -196,6 +195,65 @@ class DrawGameField extends Panel{
         }
 
     }
+
+
+    // Доработанный AI компьютера, который умеет блокировать выигрышные комбинации
+    private void aiTurn() {
+        int x = -1, y = -1;
+
+        // ИИ ищет свои выигрышные комбинации. Если находит, запоминает
+        for(int i = 0; i < cellsCount; i++)
+            for(int j = 0; j < cellsCount; j++) {
+                if(mapCells[i][j] == 0) {
+                    mapCells[i][j] = currentPlr;
+                    if(checkWin(currentPlr)) {
+                        x = j;
+                        y = i;
+                    }
+                    mapCells[i][j] = 0;
+                    gameOver = "Nothing";
+                }
+            }
+
+        // Если ИИ не нашел выигрышные комбинации, он ищет выигрышные комбинации соперника
+        if(x == -1 && y == -1) {
+            for(int i = 0; i < cellsCount; i++)
+                for(int j = 0; j < cellsCount; j++) {
+                    if(mapCells[i][j] == 0) {
+                        mapCells[i][j] = 1;
+                        if(checkWin(oppositePlr)) {
+                            x = j;
+                            y = i;
+                        }
+                        mapCells[i][j] = 0;
+                        gameOver = "Nothing";
+                    }
+                }
+        }
+
+        // Если ИИ не нашел выигрышную комбинацию он ставит фишку на случайную позицию
+        if(x == -1 && y == -1) {
+            do {
+                x = rndTurn.nextInt(cellsCount);
+                y = rndTurn.nextInt(cellsCount);
+            } while(mapCells[y][x] != 0);
+        }
+
+        // Подставляем фишку компьютера
+        mapCells[y][x] = currentPlr;
+        repaint();
+
+        // Смена игрока
+        if(currentPlr == 1) {
+            currentPlr = 2;
+            oppositePlr = 1;
+        } else {
+            currentPlr = 1;
+            oppositePlr = 2;
+        }
+    }
+
+/*
 
     // Метод отвечает за ход AI
     private void aiTurn() {
@@ -209,33 +267,39 @@ class DrawGameField extends Panel{
         do {
             cellX = rndTurn.nextInt(cellsCount);
             cellY = rndTurn.nextInt(cellsCount);
-        } while(usedCells[cellX][cellY] != 0);
+        } while(mapCells[cellX][cellY] != 0);
 
         if(currentPlr == 1) {
-            usedCells[cellX][cellY] = 1;
+            mapCells[cellX][cellY] = 1;
             this.repaint();
             currentPlr = 2;
             oppositePlr = 1;
         } else {
-            usedCells[cellX][cellY] = 2;
+            mapCells[cellX][cellY] = 2;
             this.repaint();
             currentPlr = 1;
             oppositePlr = 2;
         }
     }
 
+*/
 
 
-    // Метод проверяет заполненность поля
-    private boolean isFieldFull() {
-        for(int[] x1 : usedCells) {
-            for(int x2 : x1) {
-                if(x2 == 0)
-                    return false;
-            }
+    // Метод проверяет все варианты завершения игры
+    private void gameOver() {
+        if(checkWin(oppositePlr)) {
+            for(int i = 0; i < cellsCount; i++)
+                for(int j = 0; j < cellsCount; j++)
+                    if(mapCells[i][j] == 0)
+                        mapCells[i][j] = -1;
+            repaint();
+            return;
         }
 
-        return true;
+        if(isFieldFull()) {
+            gameOver = "        Draw";
+            repaint();
+        }
     }
 
     // Метод проверяет наличие выигрышной комбинации
@@ -263,61 +327,21 @@ class DrawGameField extends Panel{
                 sy + l * vy < -1)
             return false;
         for(int i = 0; i < l; i++) {
-            if(usedCells[sy + vy * i][sx + vx * i] != currentPlayer)
+            if(mapCells[sy + vy * i][sx + vx * i] != currentPlayer)
                 return false;
         }
         return true;
     }
 
-
-
-
-/*
-    // Метод принимает значение фишки и проверяет наличие выигрышной комбинации на поле
-    private boolean isWinComb() {
-        int d1 = 0;
-        int d2 = 0;
-        int a = 0;
-        int b = 0;
-        int plr;
-        if(currentPlr == 1) plr = 2;
-        else plr = 1;
-        // Проверяем диагонали
-        for(int i = 0; i < cellsCount; i++) {
-            if(usedCells[i][i] == plr)
-                d1++;
-            else
-                d1 = 0;
-
-            if(usedCells[cellsCount-1-i][i] == plr)
-                d2++;
-            else
-                d2 = 0;
-
-            if(d1 == combToWin || d2 == combToWin)
-                return true;
+    // Метод проверяет заполненность поля
+    private boolean isFieldFull() {
+        for(int[] x1 : mapCells) {
+            for(int x2 : x1) {
+                if(x2 == 0)
+                    return false;
+            }
         }
 
-        return false;
+        return true;
     }
-*/
-
-    // Метод проверяет все варианты завершения игры
-    private void gameOver() {
-        if(checkWin(oppositePlr)) {
-            for(int i = 0; i < cellsCount; i++)
-                for(int j = 0; j < cellsCount; j++)
-                    if(usedCells[i][j] == 0)
-                        usedCells[i][j] = -1;
-            repaint();
-            return;
-        }
-
-        if(isFieldFull()) {
-            gameOver = "        Draw";
-            repaint();
-
-        }
-    }
-
 }
