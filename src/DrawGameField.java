@@ -17,6 +17,8 @@ class DrawGameField extends Panel{
         this.fieldWidth = fieldWidth;
         this.fieldHeight = fieldHeight;
         this.cellsCount = cellsCount;
+        this.cellSize = fieldWidth/cellsCount;
+        this.usedCells = new int[cellsCount][cellsCount];
 
         setBackground(Color.PINK);
 
@@ -40,22 +42,38 @@ class DrawGameField extends Panel{
 
     @Override
     public void paint(Graphics g) {
+        Graphics2D g2 = (Graphics2D) g;
+
         // Отрисовка сетки игрового поля
+        g2.setStroke(new BasicStroke(3));
         for(int i = 0; i < cellsCount + 1; i++)
-            g.drawLine(((fieldWidth * i) / cellsCount), 0, ((fieldWidth * i) / cellsCount), fieldHeight);
+            g2.drawLine( aX(i), 0, aX(i), fieldHeight);
         for(int i = 0; i < cellsCount + 1; i++)
-            g.drawLine(0, ((fieldHeight * i) / cellsCount), fieldWidth, ((fieldHeight * i) / cellsCount));
+            g2.drawLine(0, aY(i), fieldWidth, aY(i));
 
         // Заполнение ячеек игрового поля
+        g2.setStroke(new BasicStroke(5));
         for(int i = 0; i < cellsCount; i++) {
             for(int j = 0; j < cellsCount; j++) {
                 if(usedCells[i][j] == 1) {
-                    g.drawLine( i*cellSize,  j*cellSize, (i+1)*cellSize, (j+1)*cellSize );
-                    g.drawLine( i*cellSize, (j+1)*cellSize, (i+1)*cellSize, j*cellSize );
+                    g2.setColor(Color.RED);
+                    g2.drawLine( aX(i)+7,  aY(j)+7, aX(i+1)-7, aY(j+1)-7 );
+                    g2.drawLine( aX(i)+7, aY(j+1)-7, aX(i+1)-7, aY(j)+7 );
                 }
             }
         }
 
+    }
+
+//----------------------------------------------------------------------
+
+    // Вспомогательные методы для упрощения кода
+    private int aX(int i) {
+        return (fieldWidth*i)/cellsCount;
+    }
+
+    private int aY(int j) {
+        return (fieldHeight*j)/cellsCount;
     }
 
 //----------------------------------------------------------------------

@@ -363,7 +363,6 @@ public class TicTacToe extends Applet {
         btnToGenMenu.setFont(fntSetElements);
         pnlSetMenu.add(btnToGenMenu, gbc);
 
-//----------------------------------------------------------------------
 
         // Обработка событий
         // Обработка клавиш меню настроек
@@ -373,5 +372,6 @@ public class TicTacToe extends Applet {
                 cardLayout.show(pnlApp, "General Menu");
             }
         });
+
     }
 }
