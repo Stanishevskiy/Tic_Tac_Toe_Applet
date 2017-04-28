@@ -144,9 +144,9 @@ public class TicTacToe extends Applet {
         fieldHeight = this.getHeight();
 
         // Задаем игроков
-        if( typePlr1.equals(chsTypePlayer1.getSelectedItem()) )
+        if( !typePlr1.equals(chsTypePlayer1.getSelectedItem()) )
             typePlr1 = chsTypePlayer1.getSelectedItem();
-        if( typePlr2.equals(chsTypePlayer2.getSelectedItem()) )
+        if( !typePlr2.equals(chsTypePlayer2.getSelectedItem()) )
             typePlr2 = chsTypePlayer2.getSelectedItem();
 
         // Фишки игроков
@@ -253,7 +253,6 @@ public class TicTacToe extends Applet {
         gbc.anchor = GridBagConstraints.WEST;
         gbc.gridx = 1;
         gbc.gridy = 3;
-        Choice chsTypePlayer1 = new Choice();
         chsTypePlayer1.add("Human");
         chsTypePlayer1.add("AI");
         chsTypePlayer1.setFont(fntSetElements);
@@ -327,7 +326,6 @@ public class TicTacToe extends Applet {
         gbc.anchor = GridBagConstraints.WEST;
         gbc.gridx = 1;
         gbc.gridy = 8;
-        Choice chsTypePlayer2 = new Choice();
         chsTypePlayer2.add("AI");
         chsTypePlayer2.add("Human");
         chsTypePlayer2.setFont(fntSetElements);
