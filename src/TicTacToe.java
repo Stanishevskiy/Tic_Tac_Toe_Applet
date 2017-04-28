@@ -22,6 +22,8 @@ public class TicTacToe extends Applet {
     private Choice chsFigureTypePlayer2 = new Choice();
     private Choice chsFigureColorPlayer1 = new Choice();
     private Choice chsFigureColorPlayer2 = new Choice();
+    private Choice chsCellsCount = new Choice();
+    private Choice chsCombToWin = new Choice();
 
     // Переменные содержат игровые параметры
     private int fieldWidth = 500;
@@ -34,11 +36,8 @@ public class TicTacToe extends Applet {
     private String figureColorPlayer2 = "Blue";
     private Color figColPlr1 = Color.RED;
     private Color figColPlr2 = Color.BLUE;
-
-    private Choice chsCellsCount = new Choice();
     private int cellsCount = 3;
-    private Choice chsCombToWin = new Choice();
-//    private int comboToWin = Integer.parseInt(chsComboToWin.getSelectedItem());
+    private int combToWin = 3;
 
 //----------------------------------------------------------------------
 
@@ -52,7 +51,7 @@ public class TicTacToe extends Applet {
         pnlSetMenu();
         gameFieldSet();
         // Создаем игровое поле с заданными в конструкторе параметрами
-        gameField = new DrawGameField(fieldWidth, fieldHeight, typePlr1, typePlr2, figureTypePlayer1, figureTypePlayer2, figColPlr1, figColPlr2, cellsCount);
+        gameField = new DrawGameField(fieldWidth, fieldHeight, typePlr1, typePlr2, figureTypePlayer1, figureTypePlayer2, figColPlr1, figColPlr2, cellsCount, combToWin);
 
         pnlApp.add(gameField, "Game Field");
 
@@ -169,8 +168,12 @@ public class TicTacToe extends Applet {
         if( cellsCount != Integer.parseInt(chsCellsCount.getSelectedItem()) )
             cellsCount = Integer.parseInt(chsCellsCount.getSelectedItem());
 
+        // Выигрышная комбинация
+        if( combToWin != Integer.parseInt(chsCombToWin.getSelectedItem()) )
+            combToWin = Integer.parseInt(chsCombToWin.getSelectedItem());
+
         // Заменяем панель игрового поля новой, с новыми параметрами
-        gameField = new DrawGameField(fieldWidth, fieldHeight, typePlr1, typePlr2, figureTypePlayer1, figureTypePlayer2, figColPlr1, figColPlr2, cellsCount);
+        gameField = new DrawGameField(fieldWidth, fieldHeight, typePlr1, typePlr2, figureTypePlayer1, figureTypePlayer2, figColPlr1, figColPlr2, cellsCount, combToWin);
         pnlApp.add(gameField, "Game Field");
     }
 
