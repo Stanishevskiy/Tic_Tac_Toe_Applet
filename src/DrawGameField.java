@@ -253,39 +253,8 @@ class DrawGameField extends Panel{
         }
     }
 
-/*
 
-    // Метод отвечает за ход AI
-    private void aiTurn() {
-        // Если поле заполнено, сразу выходим из метода
-        if(isFieldFull()) {
-            return;
-        }
-
-        int cellX;
-        int cellY;
-        do {
-            cellX = rndTurn.nextInt(cellsCount);
-            cellY = rndTurn.nextInt(cellsCount);
-        } while(mapCells[cellX][cellY] != 0);
-
-        if(currentPlr == 1) {
-            mapCells[cellX][cellY] = 1;
-            this.repaint();
-            currentPlr = 2;
-            oppositePlr = 1;
-        } else {
-            mapCells[cellX][cellY] = 2;
-            this.repaint();
-            currentPlr = 1;
-            oppositePlr = 2;
-        }
-    }
-
-*/
-
-
-    // Метод проверяет все варианты завершения игры
+    // Метод проверяет все возможные варианты завершения игры
     private void gameOver() {
         if(checkWin(oppositePlr)) {
             for(int i = 0; i < cellsCount; i++)

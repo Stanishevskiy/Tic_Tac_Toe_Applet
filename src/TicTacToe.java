@@ -70,7 +70,6 @@ public class TicTacToe extends Applet {
         // Задаем название
         Label lblGenMenu = new Label();
         lblGenMenu.setText("TIC-TAC-TOE");
-        lblGenMenu.setBackground(Color.LIGHT_GRAY);
         // Задаем шрифт
         Font fntLbl = new Font("Helvetica", Font.BOLD, 54);
         lblGenMenu.setFont(fntLbl);
