@@ -9,17 +9,28 @@ import java.awt.event.ActionListener;
  */
 
 public class TicTacToe extends Applet {
-    // Переменные содержат объекты панелей используемые всеми методами
+    // Переменные содержат объекты панелей и их компоненты
     private CardLayout cardLayout = new CardLayout();
     private Panel pnlApp = new Panel(cardLayout);
     private Panel pnlGenMenu = new Panel();
     private Panel pnlSetMenu = new Panel();
     private GridBagConstraints gbc = new GridBagConstraints();
     private DrawGameField gameField;
+    private Choice chsFigureTypePlayer1 = new Choice();
+    private Choice chsFigureTypePlayer2 = new Choice();
+    private Choice chsFigureColorPlayer1 = new Choice();
+    private Choice chsFigureColorPlayer2 = new Choice();
 
     // Переменные содержащат игровые параметры
     private int fieldWidth = 500;
     private int fieldHeight = 500;
+    private String figureTypePlayer1 = "Cross";
+    private String figureTypePlayer2 = "Circle";
+    private String figureColorPlayer1 = "Red";
+    private String figureColorPlayer2 = "Blue";
+    private Color figColPlr1 = Color.RED;
+    private Color figColPlr2 = Color.BLUE;
+
     private Choice chsCellsCount = new Choice();
     private int cellsCount = 3;
     private Choice chsCombToWin = new Choice();
@@ -29,22 +40,19 @@ public class TicTacToe extends Applet {
 
     @Override
     public void init() {
-        // Создаем панели
+        // Задаем параметры апплета
         setSize(500, 500);
         setLayout(new BorderLayout());
-
+        // Создаем панели меню
         pnlGenMenu();
         pnlSetMenu();
         gameFieldSet();
+        // Создаем игровое поле с заданными в конструкторе параметрами
+        gameField = new DrawGameField(fieldWidth, fieldHeight, figureTypePlayer1, figureTypePlayer2, figColPlr1, figColPlr2, cellsCount);
 
-        gameField = new DrawGameField(fieldWidth, fieldHeight, cellsCount);
         pnlApp.add(gameField, "Game Field");
 
         add(pnlApp, BorderLayout.CENTER);
-
-        // Узнать размер апплета
-//        System.out.println(fieldWidth);
-//        System.out.println(fieldHeight);
     }
 
 //----------------------------------------------------------------------
@@ -126,17 +134,58 @@ public class TicTacToe extends Applet {
 
 //----------------------------------------------------------------------
 
-    // Метод отвечающий за создание игрового поля
+    // Метод отвечающий за параметры игрового поля
     private void gameFieldSet() {
         fieldWidth = this.getWidth();
         fieldHeight = this.getHeight();
 
+        // Фишки выбранные для игроков
+        if( !figureTypePlayer1.equals(chsFigureTypePlayer1.getSelectedItem()) )
+            figureTypePlayer1 = chsFigureTypePlayer1.getSelectedItem();
+        if( !figureTypePlayer2.equals(chsFigureTypePlayer2.getSelectedItem()) )
+            figureTypePlayer2 = chsFigureTypePlayer2.getSelectedItem();
 
-        if( cellsCount != Integer.parseInt(chsCellsCount.getSelectedItem()) ) {
-            cellsCount = Integer.parseInt(chsCellsCount.getSelectedItem());
-            gameField = new DrawGameField(fieldWidth, fieldHeight, cellsCount);
-            pnlApp.add(gameField, "Game Field");
+        // Выбор цвета фишки для игроков
+        if( !figureColorPlayer1.equals(chsFigureColorPlayer1.getSelectedItem()) ) {
+            figureColorPlayer1 = chsFigureColorPlayer1.getSelectedItem();
+            figColPlr1 = selectColor(figureColorPlayer1, figColPlr1);
         }
+        if( !figureColorPlayer2.equals(chsFigureColorPlayer2.getSelectedItem()) ) {
+            figureColorPlayer2 = chsFigureColorPlayer2.getSelectedItem();
+            figColPlr2 = selectColor(figureColorPlayer2, figColPlr2);
+        }
+
+
+        if( cellsCount != Integer.parseInt(chsCellsCount.getSelectedItem()) )
+            cellsCount = Integer.parseInt(chsCellsCount.getSelectedItem());
+
+        gameField = new DrawGameField(fieldWidth, fieldHeight, figureTypePlayer1, figureTypePlayer2, figColPlr1, figColPlr2, cellsCount);
+        pnlApp.add(gameField, "Game Field");
+    }
+
+//----------------------------------------------------------------------
+
+    // Вспомогательные методы для упрощения кода
+    private Color selectColor(String figColPlrStr, Color figColPlr) {
+        Color resClr = figColPlr;
+        switch(figColPlrStr) {
+            case "Red":
+                resClr = Color.RED;
+                break;
+            case "Blue":
+                resClr = Color.BLUE;
+                break;
+            case "Yellow":
+                resClr = Color.YELLOW;
+                break;
+            case "Green":
+                resClr = Color.GREEN;
+                break;
+            case "Purple":
+                resClr = Color.MAGENTA;
+                break;
+        }
+        return resClr;
     }
 
 //----------------------------------------------------------------------
@@ -209,7 +258,6 @@ public class TicTacToe extends Applet {
         gbc.anchor = GridBagConstraints.WEST;
         gbc.gridx = 1;
         gbc.gridy = 4;
-        Choice chsFigureTypePlayer1 = new Choice();
         chsFigureTypePlayer1.add("Cross");
         chsFigureTypePlayer1.add("Circle");
         chsFigureTypePlayer1.add("Square");
@@ -228,12 +276,11 @@ public class TicTacToe extends Applet {
         gbc.anchor = GridBagConstraints.WEST;
         gbc.gridx = 1;
         gbc.gridy = 5;
-        Choice chsFigureColorPlayer1 = new Choice();
         chsFigureColorPlayer1.add("Red");
         chsFigureColorPlayer1.add("Blue");
         chsFigureColorPlayer1.add("Yellow");
         chsFigureColorPlayer1.add("Green");
-        chsFigureColorPlayer1.add("Brown");
+        chsFigureColorPlayer1.add("Purple");
         chsFigureColorPlayer1.setFont(fntSetElements);
         pnlSetMenu.add(chsFigureColorPlayer1, gbc);
 
@@ -285,7 +332,6 @@ public class TicTacToe extends Applet {
         gbc.anchor = GridBagConstraints.WEST;
         gbc.gridx = 1;
         gbc.gridy = 9;
-        Choice chsFigureTypePlayer2 = new Choice();
         chsFigureTypePlayer2.add("Circle");
         chsFigureTypePlayer2.add("Cross");
         chsFigureTypePlayer2.add("Square");
@@ -304,12 +350,11 @@ public class TicTacToe extends Applet {
         gbc.anchor = GridBagConstraints.WEST;
         gbc.gridx = 1;
         gbc.gridy = 10;
-        Choice chsFigureColorPlayer2 = new Choice();
         chsFigureColorPlayer2.add("Blue");
         chsFigureColorPlayer2.add("Red");
         chsFigureColorPlayer2.add("Yellow");
         chsFigureColorPlayer2.add("Green");
-        chsFigureColorPlayer2.add("Brown");
+        chsFigureColorPlayer2.add("Purple");
         chsFigureColorPlayer2.setFont(fntSetElements);
         pnlSetMenu.add(chsFigureColorPlayer2, gbc);
 
