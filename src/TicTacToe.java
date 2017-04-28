@@ -2,6 +2,8 @@ import java.applet.Applet;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
 /*
   <applet code="TicTacToe" width=500 height=500>
@@ -401,12 +403,6 @@ public class TicTacToe extends Applet {
         gbc.gridx = 1;
         gbc.gridy = 12;
         chsCombToWin.add("3");
-        chsCombToWin.add("4");
-        chsCombToWin.add("5");
-        chsCombToWin.add("6");
-        chsCombToWin.add("7");
-        chsCombToWin.add("8");
-        chsCombToWin.add("9");
         chsCombToWin.setFont(fntSetElements);
         pnlSetMenu.add(chsCombToWin, gbc);
 
@@ -426,6 +422,19 @@ public class TicTacToe extends Applet {
             @Override
             public void actionPerformed(ActionEvent e) {
                 cardLayout.show(pnlApp, "General Menu");
+            }
+        });
+
+        // Данный анонимный класс регулирует, чтобы победная комбинация не превышала размер поля
+        chsCellsCount.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                chsCombToWin.removeAll();
+                for(int i = 3; i < 10; i++) {
+                    if( (i <= Integer.parseInt(chsCellsCount.getSelectedItem()) ) ) {
+                        chsCombToWin.add(String.valueOf(i));
+                    }
+                }
             }
         });
 
