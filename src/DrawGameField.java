@@ -1,12 +1,11 @@
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.util.Random;
 
 class DrawGameField extends Panel{
     private int fieldWidth = 500;
     private int fieldHeight = 500;
-    private int currentPlr = 1;
+    private Integer currentPlr = 1;
     private int oppositePlr = 2;
     private String figPlr1 = "Cross";
     private String figPlr2 = "Circle";
@@ -14,7 +13,8 @@ class DrawGameField extends Panel{
     private Color colPlr2 = Color.BLUE;
     private int cellsCount = 3;
     private int combToWin = 3;
-    private int cellSize = fieldWidth/cellsCount;
+    private int cellWidth = fieldWidth/cellsCount;
+    private int cellHeight = fieldHeight/cellsCount;
     private int mouseX = 0;
     private int mouseY = 0;
     private int[][] mapCells = new int[cellsCount][cellsCount];
@@ -32,7 +32,8 @@ class DrawGameField extends Panel{
         this.colPlr2 = colPlr2;
         this.cellsCount = cellsCount;
         this.combToWin = combToWin;
-        this.cellSize = fieldWidth/cellsCount;
+        this.cellWidth = fieldWidth/cellsCount;
+        this.cellHeight = fieldHeight/cellsCount;
         this.mapCells = new int[cellsCount][cellsCount];
 
         setBackground(Color.PINK);
@@ -46,7 +47,8 @@ class DrawGameField extends Panel{
                 if((currentPlr == 1 && plr1.equals("Human")) || (currentPlr == 2 && plr2.equals("Human"))) {
                     humanTurn();
                     gameOver();
-                } else {
+                }
+                else {
                     if((currentPlr == 1 && plr1.equals("AI")) || (currentPlr == 2 && plr2.equals("AI"))) {
                         aiTurn();
                         gameOver();
@@ -86,27 +88,27 @@ class DrawGameField extends Panel{
                             break;
                         case "Circle":
                             g2.setColor(Color.BLACK);
-                            g2.drawOval( aX(i)+10, aY(j)+10, cellSize-14, cellSize-14 );
+                            g2.drawOval( aX(i)+10, aY(j)+10, cellWidth-14, cellHeight-14 );
                             g2.setColor(colPlr1);
-                            g2.drawOval( aX(i)+7, aY(j)+7, cellSize-14, cellSize-14 );
+                            g2.drawOval( aX(i)+7, aY(j)+7, cellWidth-14, cellHeight-14 );
                             break;
                         case "Square":
                             g2.setColor(Color.BLACK);
-                            g2.drawRect( aX(i)+10, aY(j)+10, cellSize-14, cellSize-14 );
+                            g2.drawRect( aX(i)+10, aY(j)+10, cellWidth-14, cellHeight-14 );
                             g2.setColor(colPlr1);
-                            g2.drawRect( aX(i)+7, aY(j)+7, cellSize-14, cellSize-14 );
+                            g2.drawRect( aX(i)+7, aY(j)+7, cellWidth-14, cellHeight-14 );
                             break;
                         case "fCircle":
                             g2.setColor(Color.BLACK);
-                            g2.fillOval( aX(i)+10, aY(j)+10, cellSize-14, cellSize-14 );
+                            g2.fillOval( aX(i)+10, aY(j)+10, cellWidth-14, cellHeight-14 );
                             g2.setColor(colPlr1);
-                            g2.fillOval( aX(i)+7, aY(j)+7, cellSize-14, cellSize-14 );
+                            g2.fillOval( aX(i)+7, aY(j)+7, cellWidth-14, cellHeight-14 );
                             break;
                         case "fSquare":
                             g2.setColor(Color.BLACK);
-                            g2.fillRect( aX(i)+10, aY(j)+10, cellSize-14, cellSize-14 );
+                            g2.fillRect( aX(i)+10, aY(j)+10, cellWidth-14, cellHeight-14 );
                             g2.setColor(colPlr1);
-                            g2.fillRect( aX(i)+7, aY(j)+7, cellSize-14, cellSize-14 );
+                            g2.fillRect( aX(i)+7, aY(j)+7, cellWidth-14, cellHeight-14 );
                             break;
                     }
                 }
@@ -122,27 +124,27 @@ class DrawGameField extends Panel{
                             break;
                         case "Circle":
                             g2.setColor(Color.BLACK);
-                            g2.drawOval( aX(i)+10, aY(j)+10, cellSize-14, cellSize-14 );
+                            g2.drawOval( aX(i)+10, aY(j)+10, cellWidth-14, cellHeight-14 );
                             g2.setColor(colPlr2);
-                            g2.drawOval( aX(i)+7, aY(j)+7, cellSize-14, cellSize-14 );
+                            g2.drawOval( aX(i)+7, aY(j)+7, cellWidth-14, cellHeight-14 );
                             break;
                         case "Square":
                             g2.setColor(Color.BLACK);
-                            g2.drawRect( aX(i)+10, aY(j)+10, cellSize-14, cellSize-14 );
+                            g2.drawRect( aX(i)+10, aY(j)+10, cellWidth-14, cellHeight-14 );
                             g2.setColor(colPlr2);
-                            g2.drawRect( aX(i)+7, aY(j)+7, cellSize-14, cellSize-14 );
+                            g2.drawRect( aX(i)+7, aY(j)+7, cellWidth-14, cellHeight-14 );
                             break;
                         case "fCircle":
                             g2.setColor(Color.BLACK);
-                            g2.fillOval( aX(i)+10, aY(j)+10, cellSize-14, cellSize-14 );
+                            g2.fillOval( aX(i)+10, aY(j)+10, cellWidth-14, cellHeight-14 );
                             g2.setColor(colPlr2);
-                            g2.fillOval( aX(i)+7, aY(j)+7, cellSize-14, cellSize-14 );
+                            g2.fillOval( aX(i)+7, aY(j)+7, cellWidth-14, cellHeight-14 );
                             break;
                         case "fSquare":
                             g2.setColor(Color.BLACK);
-                            g2.fillRect( aX(i)+10, aY(j)+10, cellSize-14, cellSize-14 );
+                            g2.fillRect( aX(i)+10, aY(j)+10, cellWidth-14, cellHeight-14 );
                             g2.setColor(colPlr2);
-                            g2.fillRect( aX(i)+7, aY(j)+7, cellSize-14, cellSize-14 );
+                            g2.fillRect( aX(i)+7, aY(j)+7, cellWidth-14, cellHeight-14 );
                             break;
                     }
                 }
@@ -154,8 +156,6 @@ class DrawGameField extends Panel{
                     g2.setColor(Color.ORANGE);
                     g2.drawString(gameOver, 6, 196);
                 }
-
-
 
             }
         }
@@ -178,8 +178,8 @@ class DrawGameField extends Panel{
 
     // Метод отвечает за ход человека
     private void humanTurn() {
-        int cellX = mouseX/cellSize;
-        int cellY = mouseY/cellSize;
+        int cellX = mouseX/cellWidth;
+        int cellY = mouseY/cellHeight;
         if(mapCells[cellX][cellY] == 0) {
             if(currentPlr == 1) {
                 mapCells[cellX][cellY] = 1;
@@ -313,4 +313,9 @@ class DrawGameField extends Panel{
 
         return true;
     }
+
+//----------------------------------------------------------------------
+
+
+
 }
